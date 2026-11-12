@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDF Assistant</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#f4f7fb;font:16px/1.5 system-ui,sans-serif}main{max-width:920px;margin:auto;padding:56px 22px;text-align:center}.brand{font-weight:800;letter-spacing:.12em;color:#8bb6ff}.hero{padding:45px 0}h1{font-size:clamp(2.5rem,7vw,4.6rem);line-height:1.05;letter-spacing:-.04em;margin:20px 0}p{color:#aab8cc}.upload,.card{background:#142139;border:1px solid #304360;border-radius:18px;padding:25px}.upload{border-style:dashed;max-width:660px;margin:30px auto}.btn{background:#628ff0;color:#fff;border:0;border-radius:10px;padding:13px 20px;font-weight:700;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:24px}.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:24px}.card{text-align:left}.muted{font-size:.9rem}section{margin-top:60px}@media(max-width:650px){.grid,.plans{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<div class="brand">PDF ASSISTANT</div>
+<div class="hero"><h1>Turn your PDFs into <span style="color:#8bb6ff">practice that works.</span></h1><p>Upload your notes and study material. Create questions, quizzes and practice tests from what you need to learn.</p>
+<div class="upload"><h2>Start with a PDF</h2><p>Select a PDF from your device to get started.</p><input id="pdf" type="file" accept="application/pdf,.pdf" hidden><button class="btn" id="choose">Choose PDF</button><p id="status" class="muted">PDF processing will be connected in the next development stage.</p></div></div>
+<section><h2>Your material. Your practice.</h2><div class="grid"><article class="card"><h3>Generate questions</h3><p>Create questions based on uploaded study material.</p></article><article class="card"><h3>Practice tests</h3><p>Turn PDFs into test-style revision sessions.</p></article><article class="card"><h3>Track learning</h3><p>Review progress and results as you study.</p></article></div></section>
+<section><h2>Plans for every learner</h2><div class="plans"><article class="card"><h3>Free</h3><p>Core tools with sensible usage limits.</p></article><article class="card"><h3>Premium</h3><p>Higher limits and advanced study tools.</p></article></div></section>
+<p class="muted">© <span id="year"></span> PDF Assistant</p>
+</main>
+<script>
+const file=document.getElementById('pdf');document.getElementById('choose').addEventListener('click',()=>file.click());file.addEventListener('change',()=>{const f=file.files[0];document.getElementById('status').textContent=f?'Selected: '+f.name+' — PDF processing will be connected in the next development stage.':'Select a PDF to begin.'});document.getElementById('year').textContent=new Date().getFullYear();
+</script></body></html>
