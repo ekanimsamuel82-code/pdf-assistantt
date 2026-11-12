@@ -3,19 +3,85 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PDF Assistant</title>
+<meta name="theme-color" content="#0b1220">
+<title>PDF Assistant — Study smarter</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#f4f7fb;font:16px/1.5 system-ui,sans-serif}main{max-width:920px;margin:auto;padding:56px 22px;text-align:center}.brand{font-weight:800;letter-spacing:.12em;color:#8bb6ff}.hero{padding:45px 0}h1{font-size:clamp(2.5rem,7vw,4.6rem);line-height:1.05;letter-spacing:-.04em;margin:20px 0}p{color:#aab8cc}.upload,.card{background:#142139;border:1px solid #304360;border-radius:18px;padding:25px}.upload{border-style:dashed;max-width:660px;margin:30px auto}.btn{background:#628ff0;color:#fff;border:0;border-radius:10px;padding:13px 20px;font-weight:700;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:24px}.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:24px}.card{text-align:left}.muted{font-size:.9rem}section{margin-top:60px}@media(max-width:650px){.grid,.plans{grid-template-columns:1fr}}
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#f4f7fb;font:16px/1.55 system-ui,sans-serif}main{max-width:940px;margin:auto;padding:38px 20px 60px;text-align:center}.brand{font-weight:800;letter-spacing:.12em;color:#8bb6ff}.hero{padding:48px 0 24px}h1{font-size:clamp(2.4rem,7vw,4.4rem);line-height:1.05;letter-spacing:-.04em;margin:20px 0}p{color:#aab8cc}.upload,.card,.question{background:#142139;border:1px solid #304360;border-radius:18px;padding:23px}.upload{border-style:dashed;max-width:680px;margin:28px auto}.btn{background:#628ff0;color:white;border:0;border-radius:10px;padding:12px 19px;font-weight:700;cursor:pointer}.btn:disabled{opacity:.55;cursor:wait}.secondary{background:#253957}.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;align-items:center;margin-top:14px}.controls select{background:#0b1220;color:#fff;border:1px solid #405675;border-radius:9px;padding:10px}.muted{font-size:.9rem}.status{min-height:28px;margin:16px 0 0}.status.error{color:#ffaaaa}.status.ok{color:#9ee6b0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:24px}.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:24px}.card,.question{text-align:left}.results{display:none;text-align:left;margin:38px auto 0;max-width:760px}.question{margin:14px 0}.question h3{margin:0 0 12px;font-size:1rem}.option{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-radius:9px;color:#dce6f5}.option:hover{background:#1b2d48}.option input{margin-top:5px}.explanation{display:none;color:#a8c9ff;margin:10px 0 0;font-size:.92rem}.score{font-size:1.2rem;font-weight:800;margin:18px 0;color:#b9d4ff}section{margin-top:58px}footer{color:#8293aa;margin-top:50px;font-size:.85rem}@media(max-width:650px){.grid,.plans{grid-template-columns:1fr}.hero{padding-top:30px}.upload{padding:20px 14px}}
 </style>
 </head>
 <body><main>
 <div class="brand">PDF ASSISTANT</div>
-<div class="hero"><h1>Turn your PDFs into <span style="color:#8bb6ff">practice that works.</span></h1><p>Upload your notes and study material. Create questions, quizzes and practice tests from what you need to learn.</p>
-<div class="upload"><h2>Start with a PDF</h2><p>Select a PDF from your device to get started.</p><input id="pdf" type="file" accept="application/pdf,.pdf" hidden><button class="btn" id="choose">Choose PDF</button><p id="status" class="muted">PDF processing will be connected in the next development stage.</p></div></div>
-<section><h2>Your material. Your practice.</h2><div class="grid"><article class="card"><h3>Generate questions</h3><p>Create questions based on uploaded study material.</p></article><article class="card"><h3>Practice tests</h3><p>Turn PDFs into test-style revision sessions.</p></article><article class="card"><h3>Track learning</h3><p>Review progress and results as you study.</p></article></div></section>
-<section><h2>Plans for every learner</h2><div class="plans"><article class="card"><h3>Free</h3><p>Core tools with sensible usage limits.</p></article><article class="card"><h3>Premium</h3><p>Higher limits and advanced study tools.</p></article></div></section>
-<p class="muted">© <span id="year"></span> PDF Assistant</p>
+<div class="hero">
+<h1>Turn your PDFs into <span style="color:#8bb6ff">practice that works.</span></h1>
+<p>Upload your notes and study material. Generate questions and test what you've learned.</p>
+<div class="upload">
+<h2>Make a quiz from your PDF</h2><p>Select a text-based PDF and choose how many questions to create.</p>
+<input id="pdf" type="file" accept="application/pdf,.pdf" hidden>
+<div class="controls"><button class="btn" id="choose" type="button">Choose PDF</button><select id="count" aria-label="Number of questions"><option value="5">5 questions</option><option value="8" selected>8 questions</option><option value="10">10 questions</option><option value="15">15 questions</option></select></div>
+<p id="filename" class="muted">No file selected · Maximum size 10 MB</p>
+<button class="btn" id="generate" type="button" disabled>Generate my quiz</button>
+<p id="status" class="status muted" role="status" aria-live="polite">Your PDF is processed for this request and is not saved by this starter app.</p>
+</div></div>
+<div id="results" class="results"><h2 id="quizTitle">Your practice quiz</h2><div id="questions"></div><button id="grade" class="btn" type="button">Check my answers</button><div id="score" class="score" aria-live="polite"></div><button id="retry" class="btn secondary" type="button">Create another quiz</button></div>
+<section><h2>Your material. Your practice.</h2><div class="grid"><article class="card"><h3>Generate questions</h3><p>Create questions based on uploaded study material.</p></article><article class="card"><h3>Practice tests</h3><p>Turn PDFs into test-style revision sessions.</p></article><article class="card"><h3>Track learning</h3><p>Review your results as you study.</p></article></div></section>
+<section><h2>Plans for every learner</h2><div class="plans"><article class="card"><h3>Free</h3><p>Core tools with sensible usage limits.</p></article><article class="card"><h3>Premium</h3><p>Higher limits and advanced study tools.</p></article></div><p class="muted">Plan limits and payments will be added after accounts and billing are set up.</p></section>
+<footer>© <span id="year"></span> PDF Assistant</footer>
 </main>
 <script>
-const file=document.getElementById('pdf');document.getElementById('choose').addEventListener('click',()=>file.click());file.addEventListener('change',()=>{const f=file.files[0];document.getElementById('status').textContent=f?'Selected: '+f.name+' — PDF processing will be connected in the next development stage.':'Select a PDF to begin.'});document.getElementById('year').textContent=new Date().getFullYear();
+const fileInput=document.getElementById('pdf');
+const choose=document.getElementById('choose');
+const generate=document.getElementById('generate');
+const statusEl=document.getElementById('status');
+const filename=document.getElementById('filename');
+const results=document.getElementById('results');
+let quiz=[];
+choose.addEventListener('click',()=>fileInput.click());
+fileInput.addEventListener('change',()=>{
+ const f=fileInput.files[0];
+ filename.textContent=f?f.name+' · '+(f.size/1024/1024).toFixed(2)+' MB':'No file selected · Maximum size 10 MB';
+ generate.disabled=!f;
+ results.style.display='none';
+ statusEl.className='status muted';
+ statusEl.textContent='Ready when you are.';
+});
+generate.addEventListener('click',async()=>{
+ const f=fileInput.files[0]; if(!f)return;
+ if(f.size>10*1024*1024){statusEl.className='status error';statusEl.textContent='This PDF is larger than 10 MB. Choose a smaller file.';return;}
+ generate.disabled=true;choose.disabled=true;statusEl.className='status muted';statusEl.textContent='Reading your PDF and creating questions…';
+ const form=new FormData();form.append('pdf',f);form.append('count',document.getElementById('count').value);
+ try{
+  const response=await fetch('/api/generate',{method:'POST',body:form});
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||'Quiz generation failed.');
+  quiz=data.questions;document.getElementById('quizTitle').textContent=data.title||'Your practice quiz';
+  const holder=document.getElementById('questions');holder.replaceChildren();
+  quiz.forEach((q,i)=>{
+   const card=document.createElement('article');card.className='question';
+   const heading=document.createElement('h3');heading.textContent=(i+1)+'. '+q.question;card.appendChild(heading);
+   q.options.forEach((opt,j)=>{
+    const label=document.createElement('label');label.className='option';
+    const radio=document.createElement('input');radio.type='radio';radio.name='q'+i;radio.value=String(j);
+    const span=document.createElement('span');span.textContent=opt;
+    label.append(radio,span);card.appendChild(label);
+   });
+   const explanation=document.createElement('p');explanation.className='explanation';explanation.id='explain'+i;explanation.textContent='Answer: '+q.options[q.answerIndex]+'. '+(q.explanation||'');card.appendChild(explanation);
+   holder.appendChild(card);
+  });
+  document.getElementById('score').textContent='';
+  results.style.display='block';statusEl.className='status ok';statusEl.textContent='Quiz ready · '+data.pages+' PDF pages processed'+(data.truncated?' · Only the first part of the document was used.':'')+'.';
+  results.scrollIntoView({behavior:'smooth',block:'start'});
+ }catch(err){statusEl.className='status error';statusEl.textContent=err.message;}
+ finally{generate.disabled=false;choose.disabled=false;}
+});
+document.getElementById('grade').addEventListener('click',()=>{
+ let correct=0,answered=0;
+ quiz.forEach((q,i)=>{
+  const selected=document.querySelector('input[name="q'+i+'"]:checked');
+  if(selected){answered++;if(Number(selected.value)===q.answerIndex)correct++;}
+  document.getElementById('explain'+i).style.display='block';
+ });
+ document.getElementById('score').textContent='Your score: '+correct+' / '+quiz.length+' · Answered: '+answered+' / '+quiz.length;
+});
+document.getElementById('retry').addEventListener('click',()=>{results.style.display='none';statusEl.textContent='Choose a PDF to make another quiz.';window.scrollTo({top:0,behavior:'smooth'});});
+document.getElementById('year').textContent=new Date().getFullYear();
 </script></body></html>
